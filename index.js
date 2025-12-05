@@ -12,6 +12,14 @@ stopBy = null;
 delay = 60000;
 audioRemind = null;
 audioEnd = null;
+var formatTime = function(ms) {
+  var totalSeconds = Math.floor(ms / 1000);
+  var hours = Math.floor(totalSeconds / 3600);
+  var minutes = Math.floor((totalSeconds % 3600) / 60);
+  var seconds = totalSeconds % 60;
+  var pad = function(num) { return num < 10 ? "0" + num : num; };
+  return pad(hours) + ":" + pad(minutes) + ":" + pad(seconds);
+};
 newAudio = function(file){
   var x$, node;
   x$ = node = new Audio();
@@ -47,7 +55,7 @@ adjust = function(it, v){
   if (delay <= 0) {
     delay = 0;
   }
-  $('#timer').text(delay);
+  $('#timer').text(formatTime(delay));
   return resize();
 };
 toggle = function(){
@@ -84,7 +92,7 @@ reset = function(){
     clearInterval(handler);
   }
   handler = null;
-  $('#timer').text(delay);
+  $('#timer').text(formatTime(delay));
   $('#timer').css('color', '#fff');
   return resize();
 };
@@ -116,7 +124,7 @@ count = function(){
       return blink();
     }, 500);
   }
-  tm.text(diff + "");
+  tm.text(formatTime(diff));
   return resize();
 };
 run = function(){
@@ -149,7 +157,7 @@ resize = function(){
   return tm.css('line-height', h + "px");
 };
 window.onload = function(){
-  $('#timer').text(delay);
+  $('#timer').text(formatTime(delay));
   resize();
   audioRemind = newAudio('audio/smb_warning.mp3');
   return audioEnd = newAudio('audio/smb_mariodie.mp3');
